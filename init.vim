@@ -18,10 +18,10 @@ Plug 'drmingdrmer/xptemplate' " a templates engine
 Plug 'mhinz/vim-signify' " show changes in git repository.
 Plug 'jiangmiao/auto-pairs' " auto pairs
 Plug 'mhinz/vim-startify' " starting menu for (neo)vim
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy finder
+Plug 'junegunn/fzf.vim' " fuzzy finder
 Plug 'Dimercel/todo-vim' " to do manager
-Plug 'frazrepo/vim-rainbow'
+Plug 'frazrepo/vim-rainbow' " rainbow brackets
 "Initialize plugin system
 call plug#end()
 "---------------------------------- sets ----------------------------------
@@ -29,7 +29,12 @@ set number " show numbers
 set relativenumber " show numbers relative
 set smarttab
 set cindent
-au filetype java,c,cpp,py set tabstop=4
+au BufNewFile,BufRead *.py
+    \ set expandtab " replace tabs with spaces
+    \ set autoindent " copy indent when starting a new line
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
 set expandtab "always uses spaces instead of tab characters
 set autoindent
 set smartindent
@@ -57,6 +62,13 @@ set splitright
 set autochdir
 lua require'colorizer'.setup()
 let g:auto_save = 1  " enable AutoSave on Vim startup
+let g:auto_save_silent = 1  " do not display the auto-save notification
+" ---------------------------------- Return to last edit position when opening files (script) ----------------------------------
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
 "Some information
 "You can use expand(), see :h expand()
 "In a script you could do this to get file-name:
@@ -73,7 +85,7 @@ nmap go :tabnew<space>
 nmap <silent> ./ :nohlsearch <CR>
 nnoremap Y y$
 nnoremap fzf :Files<CR>
-nnoremap <F2> :TODOToggle<CR>
+nnoremap <F7> :TODOToggle<CR>
 vmap gh <plug>NERDCommenterToggle
 nmap gh <plug>NERDCommenterToggle
 "---------------------------------- autostart ----------------------------------
@@ -135,7 +147,7 @@ highlight ALEWarning ctermbg=Yellow
 highlight ALEError ctermbg=Red
 let g:ale_echo_msg_error_str = 'ERROR'
 let g:ale_echo_msg_warning_str = 'WARNING'
-let g:ale_echo_msg_format = '<%linter%>: %s <[typeof:%severity%]>'
+let g:ale_echo_msg_format = '|%linter%| %s [typeof:%severity%]'
 noremap <silent><leader>f :ALEFix<CR>
 "---------------------------------- commands & functions ----------------------------------
 command SPELL set spell!
@@ -147,7 +159,7 @@ command EnglishStyle :set noarabic
 "---------------------------------- vim-airline ----------------------------------
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme="simple"
-"---------------------------------- remove extra white space (scripts) ----------------------------------
+"---------------------------------- remove extra white space (script) ----------------------------------
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 au BufWinEnter * match ExtraWhitespace /\s\+$/
@@ -156,4 +168,29 @@ au InsertLeave * match ExtraWhitespace /\s\+$/
 au BufWinLeave * call clearmatches()
 " Remove all trailing white spaces
 "---------------------------------- vim-rainbow ----------------------------------
-let g:rainbow_guifgs = ['#FFEE00', '#00FFDE', '#FF0012']
+let g:rainbow_guifgs = ['#FFEE00', '#00FFDE', '#FF0012', '#FF00DE', '#00F7FF', '#FF9800']
+"---------------------------------- netrw ----------------------------------
+function! ToggleVExplorer()
+  if exists("t:expl_buf_num")
+      let expl_win_num = bufwinnr(t:expl_buf_num)
+      if expl_win_num != -1
+          let cur_win_nr = winnr()
+          exec expl_win_num . 'wincmd w'
+          close
+          exec cur_win_nr . 'wincmd w'
+          unlet t:expl_buf_num
+      else
+          unlet t:expl_buf_num
+      endif
+  else
+      exec '1wincmd w'
+      Vexplore
+      let t:expl_buf_num = bufnr("%")
+  endif
+endfunction
+map <silent><F2> :call ToggleVExplorer()<CR>
+let g:netrw_banner=0
+let g:netrw_keepdir=1
+let g:netrw_liststyle=3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
