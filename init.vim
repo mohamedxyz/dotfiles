@@ -63,12 +63,6 @@ set autochdir
 lua require'colorizer'.setup()
 let g:auto_save = 1  " enable AutoSave on Vim startup
 let g:auto_save_silent = 1  " do not display the auto-save notification
-" ---------------------------------- Return to last edit position when opening files (script) ----------------------------------
-autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
-
 "Some information
 "You can use expand(), see :h expand()
 "In a script you could do this to get file-name:
@@ -194,3 +188,8 @@ let g:netrw_keepdir=1
 let g:netrw_liststyle=3
 let g:netrw_browse_split = 4
 let g:netrw_altv = 1
+" ---------------------------------- Return to last edit position when opening files (script) ----------------------------------
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
