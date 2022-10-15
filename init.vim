@@ -9,7 +9,7 @@ Plug 'vim-airline/vim-airline' " status bar
 Plug 'vim-airline/vim-airline-themes' " themes for vim-airline
 Plug 'norcalli/nvim-colorizer.lua' " html css colorizer for (neo)vim
 Plug 'vim-scripts/c.vim' " I just use it for compiling
-Plug 'shime/vim-livedown' " live preview for markdown and html
+"Plug 'shime/vim-livedown' " live preview for markdown and html
 Plug 'agude/vim-eldar' " color scheme
 Plug 'tpope/vim-surround' " surround vim
 Plug 'dense-analysis/ale' " for syntax checking
@@ -18,9 +18,6 @@ Plug 'drmingdrmer/xptemplate' " a templates engine
 Plug 'mhinz/vim-signify' " show changes in git repository.
 Plug 'jiangmiao/auto-pairs' " auto pairs
 Plug 'mhinz/vim-startify' " starting menu for (neo)vim
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy finder
-Plug 'junegunn/fzf.vim' " fuzzy finder
-Plug 'Dimercel/todo-vim' " to do manager
 Plug 'frazrepo/vim-rainbow' " rainbow brackets
 "Initialize plugin system
 call plug#end()
@@ -78,14 +75,11 @@ nmap <silent> gT :tabprevious<CR>
 nmap go :tabnew<space>
 nmap <silent> ./ :nohlsearch <CR>
 nnoremap Y y$
-nnoremap fzf :Files<CR>
-nnoremap <F7> :TODOToggle<CR>
 vmap gh <plug>NERDCommenterToggle
 nmap gh <plug>NERDCommenterToggle
 "---------------------------------- autostart ----------------------------------
 au vimenter * source ~/.config/nvim/init.vim
 au vimenter * AirlineTheme simple
-au vimenter *.md,*.html :LivedownToggle
 au vimenter * :nohlsearch
 au filetype * :RainbowLoad
 "starting menu
@@ -107,8 +101,7 @@ endif
 au FileType c,cpp nnoremap <F10> :term ./
 au FileType python nnoremap <silent> <F9> :term python3.10 %<CR>
 au FileType java nnoremap <silent> <F9> :term java %<CR>
-au FileType html nnoremap <silent> <F9> :LivedownToggle<CR>
-au FileType markdown nnoremap <F9> :LivedownToggle<CR>
+"au FileType html,markdown nnoremap <silent> <F9> :LivedownToggle<CR>
 au FileType sh,bash nnoremap <F9> :term bash %<CR>
 au FileType sh,bash nnoremap <space><F9> :term bash %<space>
 "----------------------------------  move between splits ----------------------------------
@@ -142,7 +135,7 @@ highlight ALEError ctermbg=Red
 let g:ale_echo_msg_error_str = 'ERROR'
 let g:ale_echo_msg_warning_str = 'WARNING'
 let g:ale_echo_msg_format = '|%linter%| %s [typeof:%severity%]'
-noremap <silent><leader>f :ALEFix<CR>
+noremap <silent><Space>f :ALEFix<CR>
 "---------------------------------- commands & functions ----------------------------------
 command SPELL set spell!
 command PI :PlugInstall
