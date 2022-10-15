@@ -88,8 +88,8 @@ au vimenter * :Startify
 endif
 let g:startify_bookmarks = [
   \ {'i': '~/.config/nvim/init.vim'},
-  \ {'m': '~/java/main.java' },
-  \ {'sj': '~/.vim/plugged/xptemplate/ftplugin//java/java.xpt.vim' },
+  \ {'cj': '~/.vim/plugged/xptemplate/ftplugin/java/java.xpt.vim' },
+  \ {'ci': '~/.config/i3/config' },
   \ ]
 "---------------------------------- xptemplate ----------------------------------
 let g:xptemplate_key = '<F12>'
@@ -153,6 +153,7 @@ au BufWinEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
 au BufWinLeave * call clearmatches()
+nmap <silent><Space>s<CR> :%s/\s\+$//e<CR>
 " Remove all trailing white spaces
 "---------------------------------- vim-rainbow ----------------------------------
 let g:rainbow_guifgs = ['#FFEE00', '#00FFDE', '#FF0012', '#FF00DE', '#00F7FF', '#FF9800']
